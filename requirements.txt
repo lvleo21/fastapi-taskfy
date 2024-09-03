@@ -1,0 +1,12 @@
+fastapi==0.112.2
+uvicorn==0.30.6
+requests==2.32.3
+sqlalchemy==2.0.32
+pymysql==1.1.1
+httpx==0.27.2
+
+# TEST
+pytest==8.3.2
+
+# TOOLS
+alembic==1.13.2
