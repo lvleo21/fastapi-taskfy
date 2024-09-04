@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
 from fastapi import APIRouter, Depends
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from typing import List
 
 from task.models.task import Task
@@ -20,8 +20,8 @@ class TaskResponse(BaseModel):
 
 
 class TaskRequest(BaseModel):
-    title: str
-    description: str
+    title: str = Field(min_length=3, max_length=Task.TITLE_MAX_LENGHT)
+    description: str = Field(min_length=3, max_length=Task.DESCRIPTION_MAX_LENGHT)
     completed: bool
 
 
