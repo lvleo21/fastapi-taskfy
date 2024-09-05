@@ -4,7 +4,7 @@ from fastapi import Depends
 from sqlalchemy.orm import Session
 
 from task.models.task import Task
-from task.schemas.task import TaskRequestSchema
+from task.schemas.task import TaskRequestSchema, TaskRequestPartialSchema
 from shared.dependencies import get_db
 from shared.exceptions import NotFound
 
@@ -32,10 +32,18 @@ class TaskService:
         return self.db.query(Task).all()
 
     def update_task(self, id: int, task: TaskRequestSchema) -> Task:
+        updated_data = task.model_dump(exclude_unset=True)
+        return self._update_task_handler(id, updated_data)
+
+    def update_partial_task(self, id: int, task: TaskRequestPartialSchema) -> Task:
+        updated_data = task.model_dump(exclude_unset=True)
+        return self._update_task_handler(id, updated_data)
+
+    def _update_task_handler(self, id: int, updated_task: dict) -> Task:
         instance: Task = self.find_task_by_id(id)
-        instance.title = task.title
-        instance.description = task.description
-        instance.completed = task.completed
+
+        for key, value in updated_task.items():
+            setattr(instance, key, value)
 
         self.db.commit()
         self.db.refresh(instance)

@@ -2,8 +2,7 @@ from fastapi import APIRouter, Depends
 
 from typing import List
 
-from task.models.task import Task
-from task.schemas.task import TaskRequestSchema, TaskResponseSchema
+from task.schemas.task import TaskRequestSchema, TaskResponseSchema, TaskRequestPartialSchema
 from task.services.task import get_task_service, TaskService
 
 
@@ -37,9 +36,16 @@ def put_task_router(
     task: TaskRequestSchema,
     service: TaskService = Depends(get_task_service),
 ) -> TaskResponseSchema:
-    task: Task = service.update_task(task_id, task)
-    print(task)
-    return task
+    return service.update_task(task_id, task)
+
+
+@router.patch("/{task_id}", response_model=TaskResponseSchema, status_code=200)
+def patch_task_router(
+    task_id: int,
+    task: TaskRequestPartialSchema,
+    service: TaskService = Depends(get_task_service),
+) -> TaskResponseSchema:
+    return service.update_partial_task(task_id, task)
 
 
 @router.delete("/{task_id}", status_code=200)
