@@ -177,3 +177,51 @@ def test_delete_task_return_status_404_if_task_removed(client: TestClient):
     response = client.delete(f"/tasks/{task_id}")
     response = client.get(f"/tasks/{task_id}")
     assert response.status_code == 404
+
+
+def test_partial_update_task_status_201(client: TestClient):
+    task = {"title": "Título", "description": "Descrição", "completed": True}
+    response = client.post("/tasks", json=task)
+    task_id = response.json()["id"]
+
+    updated_task = {
+        "completed": True,
+    }
+    response = client.patch(f"/tasks/{task_id}", json=updated_task)
+    assert response.status_code == 200
+
+
+def test_partial_update_task_title_is_same_with_payload(client: TestClient):
+    task = {"title": "Título", "description": "Descrição", "completed": True}
+    response = client.post("/tasks", json=task)
+    task_id = response.json()["id"]
+
+    updated_task = {
+        "title": "Título alterado",
+    }
+    response = client.patch(f"/tasks/{task_id}", json=updated_task)
+    assert response.json()['title'] == updated_task['title']
+
+
+def test_partial_update_task_description_is_same_with_payload(client: TestClient):
+    task = {"title": "Título", "description": "Descrição", "completed": True}
+    response = client.post("/tasks", json=task)
+    task_id = response.json()["id"]
+
+    updated_task = {
+        "description": "Descroção alterada",
+    }
+    response = client.patch(f"/tasks/{task_id}", json=updated_task)
+    assert response.json()['description'] == updated_task['description']
+
+
+def test_partial_update_task_completed_is_same_with_payload(client: TestClient):
+    task = {"title": "Título", "description": "Descrição", "completed": True}
+    response = client.post("/tasks", json=task)
+    task_id = response.json()["id"]
+
+    updated_task = {
+        "completed": False,
+    }
+    response = client.patch(f"/tasks/{task_id}", json=updated_task)
+    assert response.json()['completed'] == updated_task['completed']
