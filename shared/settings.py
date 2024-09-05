@@ -10,7 +10,6 @@ class Settings(BaseSettings):
     PROJECT_NAME: str = "Taskfy"
     HOST: str = "127.0.0.1"
     PORT: int = 8000
-    API_V1_STR: str = "/api/v1"
 
     DB_HOST: str
     DB_PORT: int = 5432

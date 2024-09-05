@@ -2,6 +2,9 @@ from typing import List
 
 from fastapi import Depends
 from sqlalchemy.orm import Session
+from sqlalchemy import select
+
+from fastapi_pagination.ext.sqlalchemy import paginate
 
 from task.models.task import Task
 from task.schemas.task import TaskRequestSchema, TaskRequestPartialSchema
@@ -29,7 +32,10 @@ class TaskService:
         return task
 
     def get_all_tasks(self) -> List[Task]:
-        return self.db.query(Task).all()
+        return paginate(
+            self.db,
+            select(Task).order_by(Task.id)
+        )
 
     def update_task(self, id: int, task: TaskRequestSchema) -> Task:
         updated_data = task.model_dump(exclude_unset=True)

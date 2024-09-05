@@ -1,15 +1,22 @@
-from fastapi import APIRouter, Depends
-
 from typing import List
 
-from task.schemas.task import TaskRequestSchema, TaskResponseSchema, TaskRequestPartialSchema
+from fastapi import APIRouter, Depends
+
+from fastapi_pagination import Page
+
+
+from task.schemas.task import (
+    TaskRequestSchema,
+    TaskResponseSchema,
+    TaskRequestPartialSchema,
+)
 from task.services.task import get_task_service, TaskService
 
 
 router = APIRouter(prefix="/tasks")
 
 
-@router.get("", response_model=List[TaskResponseSchema])
+@router.get("", response_model=Page[TaskResponseSchema])
 def get_all_tasks_router(
     service: TaskService = Depends(get_task_service),
 ) -> List[TaskResponseSchema]:
