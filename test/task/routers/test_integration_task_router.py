@@ -146,3 +146,34 @@ def test_create_task_response_body_with_error_on_completed_invalid_value(
     }
     response = client.post("/tasks", json=payload)
     assert response.json()["detail"][0]["loc"] == ["body", "completed"]
+
+
+def test_put_task_status_201(client: TestClient):
+    task = {"title": "Título", "description": "Descrição", "completed": True}
+    response = client.post("/tasks", json=task)
+    task_id = response.json()["id"]
+
+    updated_task = {
+        "title": "New Título",
+        "description": "New Descrição",
+        "completed": False,
+    }
+    response = client.put(f"/tasks/{task_id}", json=updated_task)
+    assert response.status_code == 200
+
+
+def test_delete_task_status_201(client: TestClient):
+    task = {"title": "Título", "description": "Descrição", "completed": True}
+    response = client.post("/tasks", json=task)
+    task_id = response.json()["id"]
+    response = client.delete(f"/tasks/{task_id}")
+    assert response.status_code == 200
+
+
+def test_delete_task_return_status_404_if_task_removed(client: TestClient):
+    task = {"title": "Título", "description": "Descrição", "completed": True}
+    response = client.post("/tasks", json=task)
+    task_id = response.json()["id"]
+    response = client.delete(f"/tasks/{task_id}")
+    response = client.get(f"/tasks/{task_id}")
+    assert response.status_code == 404
