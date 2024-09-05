@@ -1,7 +1,7 @@
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
 
-from shared.exceptions import NotFound
+from core.exceptions import NotFound
 
 
 async def not_found_exception_handler(request: Request, exc: NotFound):

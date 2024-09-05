@@ -3,6 +3,7 @@ from typing import List
 from fastapi import APIRouter, Depends
 
 from fastapi_pagination import Page
+from fastapi_cache.decorator import cache
 
 
 from task.schemas.task import (
@@ -17,28 +18,30 @@ router = APIRouter(prefix="/tasks")
 
 
 @router.get("", response_model=Page[TaskResponseSchema])
-def get_all_tasks_router(
+@cache(expire=60)
+def get_all_tasks_api_view(
     service: TaskService = Depends(get_task_service),
 ) -> List[TaskResponseSchema]:
     return service.get_all_tasks()
 
 
 @router.get("/{task_id}", response_model=List[TaskResponseSchema])
-def get_task_by_id_router(
+@cache(expire=60)
+def get_task_by_id_api_view(
     task_id: int, service: TaskService = Depends(get_task_service)
 ) -> TaskResponseSchema:
     return service.find_task_by_id(task_id)
 
 
 @router.post("", response_model=TaskResponseSchema, status_code=201)
-def create_task_router(
+def create_task_api_view(
     task: TaskRequestSchema, service: TaskService = Depends(get_task_service)
 ) -> TaskResponseSchema:
     return service.create_task(task)
 
 
 @router.put("/{task_id}", response_model=TaskResponseSchema, status_code=200)
-def put_task_router(
+def put_task_api_view(
     task_id: int,
     task: TaskRequestSchema,
     service: TaskService = Depends(get_task_service),
@@ -47,7 +50,7 @@ def put_task_router(
 
 
 @router.patch("/{task_id}", response_model=TaskResponseSchema, status_code=200)
-def patch_task_router(
+def patch_task_api_view(
     task_id: int,
     task: TaskRequestPartialSchema,
     service: TaskService = Depends(get_task_service),
@@ -56,7 +59,7 @@ def patch_task_router(
 
 
 @router.delete("/{task_id}", status_code=200)
-def delete_task_router(
+def delete_task_api_view(
     task_id: int, service: TaskService = Depends(get_task_service)
 ) -> None:
     service.delete_task_by_id(task_id)

@@ -2,8 +2,8 @@ import pytest
 from fastapi.testclient import TestClient
 from sqlalchemy import create_engine, StaticPool
 from sqlalchemy.orm import Session
-from shared.database import Base
-from shared.dependencies import get_session
+from core.database import Base
+from core.dependencies import get_session
 from main import app
 
 

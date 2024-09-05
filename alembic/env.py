@@ -16,7 +16,7 @@ if config.config_file_name is not None:
 
 from task.models.task import Task
 
-from shared.database import Base
+from core.database import Base
 target_metadata = Base.metadata
 
 # other values from the config, defined by the needs of env.py,

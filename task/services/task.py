@@ -8,8 +8,8 @@ from fastapi_pagination.ext.sqlalchemy import paginate
 
 from task.models.task import Task
 from task.schemas.task import TaskRequestSchema, TaskRequestPartialSchema
-from shared.dependencies import get_db
-from shared.exceptions import NotFound
+from core.dependencies import get_db
+from core.exceptions import NotFound
 
 
 class TaskService:

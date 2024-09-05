@@ -17,7 +17,7 @@ class Settings(BaseSettings):
     DB_PASSWORD: str
     DB_NAME: str = ""
 
-    REDIS_HOST: str
+    REDIS_HOST: str = "127.0.0.1"
     REDIS_PORT: int = 6379
 
     PAGINATION_LIMIT: int = 100
