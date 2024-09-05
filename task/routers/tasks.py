@@ -1,42 +1,49 @@
-from sqlalchemy.orm import Session
 from fastapi import APIRouter, Depends
-from pydantic import BaseModel, Field
+
 from typing import List
 
 from task.models.task import Task
-from shared.dependencies import get_db
+from task.schemas.task import TaskRequestSchema, TaskResponseSchema
+from task.services.task import get_task_service, TaskService
+
 
 router = APIRouter(prefix="/tasks")
 
 
-class TaskResponse(BaseModel):
-    id: int
-    title: str
-    description: str
-    completed: bool
-
-    class ConfigDict:
-        from_attributes = True
+@router.get("", response_model=List[TaskResponseSchema])
+def get_all_tasks_router(
+    service: TaskService = Depends(get_task_service),
+) -> List[TaskResponseSchema]:
+    return service.get_all_tasks()
 
 
-class TaskRequest(BaseModel):
-    title: str = Field(min_length=3, max_length=Task.TITLE_MAX_LENGHT)
-    description: str = Field(min_length=3, max_length=Task.DESCRIPTION_MAX_LENGHT)
-    completed: bool
+@router.get("/{task_id}", response_model=List[TaskResponseSchema])
+def get_task_by_id_router(
+    task_id: int, service: TaskService = Depends(get_task_service)
+) -> TaskResponseSchema:
+    return service.find_task_by_id(task_id)
 
 
-@router.get("", response_model=List[TaskResponse])
-def get_tasks(db: Session = Depends(get_db)) -> List[TaskResponse]:
-    return db.query(Task).all()
+@router.post("", response_model=TaskResponseSchema, status_code=201)
+def create_task_router(
+    task: TaskRequestSchema, service: TaskService = Depends(get_task_service)
+) -> TaskResponseSchema:
+    return service.create_task(task)
 
 
-@router.post("", response_model=TaskResponse, status_code=201)
-def create_tasks(task: TaskRequest, db: Session = Depends(get_db)) -> TaskResponse:
-
-    task = Task(**task.model_dump())
-
-    db.add(task)
-    db.commit()
-    db.refresh(task)
-
+@router.put("/{task_id}", response_model=TaskResponseSchema, status_code=200)
+def put_task_router(
+    task_id: int,
+    task: TaskRequestSchema,
+    service: TaskService = Depends(get_task_service),
+) -> TaskResponseSchema:
+    task: Task = service.update_task(task_id, task)
+    print(task)
     return task
+
+
+@router.delete("/{task_id}", status_code=200)
+def delete_task_router(
+    task_id: int, service: TaskService = Depends(get_task_service)
+) -> None:
+    service.delete_task_by_id(task_id)
