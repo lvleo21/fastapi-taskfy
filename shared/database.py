@@ -1,9 +1,10 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import declarative_base, sessionmaker
 
-SQLALCHEMY_DATABASE_URL = (
-    "mysql+pymysql://root:102721@localhost:13306/db_fastapi_taskfy"
-)
+from shared.settings import settings
+
+
+SQLALCHEMY_DATABASE_URL = str(settings.SQLALCHEMY_DATABASE_URI)
 
 engine = create_engine(SQLALCHEMY_DATABASE_URL)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
