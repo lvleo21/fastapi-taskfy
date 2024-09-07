@@ -1,4 +1,4 @@
-from pydantic import MySQLDsn, computed_field
+from pydantic import PostgresDsn, computed_field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -22,18 +22,7 @@ class Settings(BaseSettings):
 
     PAGINATION_LIMIT: int = 100
     PAGINATION_OFFSET: int = 0
-
-    @computed_field
-    @property
-    def SQLALCHEMY_DATABASE_URI(self) -> MySQLDsn:
-        return MySQLDsn.build(
-            scheme="mysql+pymysql",
-            username=self.DB_USER,
-            password=self.DB_PASSWORD,
-            host=self.DB_HOST,
-            port=self.DB_PORT,
-            path=self.DB_NAME,
-        )
+    SQLALCHEMY_DATABASE_URI: str = ""
 
 
 settings = Settings()

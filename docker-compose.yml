@@ -1,0 +1,27 @@
+services:
+  web:
+    build: .
+    command: bash -c 'while !</dev/tcp/db/5432; do sleep 1; done; sh entrypoint.sh'
+    ports:
+      - 8008:8000
+    environment:
+      - SQLALCHEMY_DATABASE_URI=postgresql://taskfy:taskfy@db:5432/taskfy
+    depends_on:
+      - db
+  db:
+    image: postgres:14-alpine
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    expose:
+      - 5432
+    environment:
+      - POSTGRES_USER=taskfy
+      - POSTGRES_PASSWORD=taskfy
+      - POSTGRES_DB=taskfy
+  redis:
+    image: redis:alpine
+    ports:
+      - "6379:6379"
+
+volumes:
+  postgres_data:
