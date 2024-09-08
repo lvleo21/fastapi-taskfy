@@ -14,7 +14,7 @@ from task.schemas.task import (
 from task.services.task import get_task_service, TaskService
 
 
-router = APIRouter(prefix="/tasks")
+router = APIRouter(prefix="/v1/tasks")
 
 
 @router.get("", response_model=Page[TaskResponseSchema])
