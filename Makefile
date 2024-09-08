@@ -1,8 +1,8 @@
-start-dev:
-  uvicorn app.main:app --reload
+migrate-taskfy:
+	alembic upgrade head
 
 start:
-  uvicorn app.main:app
+	uvicorn --host localhost --port 8000 main:app --reload
 
 up-taskfy:
 	docker compose -f docker-compose.yml up -d --build --force-recreate --remove-orphans
