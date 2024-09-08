@@ -25,8 +25,4 @@ class TaskRequestSchema(BaseModel):
 
 
 class TaskRequestPartialSchema(BaseModel):
-    title: Optional[str] = Field(None, min_length=3, max_length=Task.TITLE_MAX_LENGHT)
-    description: Optional[str] = Field(
-        None, min_length=3, max_length=Task.DESCRIPTION_MAX_LENGHT
-    )
     completed: Optional[bool] = None
