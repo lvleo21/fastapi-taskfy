@@ -1,0 +1,17 @@
+fastapi==0.112.2
+uvicorn==0.30.6
+requests==2.32.3
+sqlalchemy==2.0.32
+httpx==0.27.2
+cryptography==43.0.1
+pydantic-settings==2.4.0
+fastapi-pagination==0.12.26
+redis==5.0.8
+fastapi-cache2==0.2.2
+psycopg2-binary==2.9.9
+
+# TEST
+pytest==8.3.2
+
+# TOOLS
+alembic==1.13.2
