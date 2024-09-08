@@ -4,4 +4,4 @@
 alembic upgrade head
 
 # Inicia a aplicação
-uvicorn --host 0.0.0.0 --port 8000 main:app
+uvicorn --host 0.0.0.0 main:app --reload
