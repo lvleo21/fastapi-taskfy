@@ -7,7 +7,7 @@
 <p align="center">
   Taskfy é a solução perfeita para quem busca organizar tarefas e aumentar a produtividade de forma prática e eficiente. A API foi desenvolvida utilizando
   FastAPI em conjunto com Docker, PostgreSQL, Redis e está hospedada no Fly.io.
-  Para acessar a aplicação basta acessar o link <a target="_blank" href="https://fastapi-taskfy.fly.dev/">clicando aqui</a>.
+  Para acessar a aplicação basta acessar o link <a href="https://fastapi-taskfy.fly.dev/" target="_blank">clicando aqui</a>.
 </p>
 
 ## Como o projeto foi organizado e executado?
